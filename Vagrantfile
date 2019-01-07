@@ -54,3 +54,6 @@ Vagrant.configure("2") do |config|
   end
 
 end
+
+# running into an issue where consul-client 5 is failing to launch, looks like may not be launching consul
+# on that machine, need to dig through logs

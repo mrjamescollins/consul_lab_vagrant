@@ -20,10 +20,13 @@ if [ ! -f /home/vagrant/consul ]; then
 	chmod +x consul
 fi 
 
-# copy over consul systemd servicefile, if consul.service isn't properly installed
-if [ ! -f /etc/systemd/system/consul.service ]; then
 	sudo chown vagrant:vagrant consul
 	sudo cp consul /usr/local/bin/consul
+
+# copy over consul systemd servicefile, if consul.service isn't properly installed
+if [ ! -f /etc/systemd/system/consul.service ]; then
+	# sudo chown vagrant:vagrant consul
+	# sudo cp consul /usr/local/bin/consul
 	cp /vagrant/consul.service /etc/systemd/system/consul.service
 	sudo chmod 777 /etc/systemd/system/consul.service
 fi
