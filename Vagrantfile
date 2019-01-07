@@ -1,10 +1,25 @@
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/xenial64"
-  config.vm.hostname = "consul-server"
+
+  # config.vm.hostname = "consul-server"
+
+  def create_consul_host(config, hostname, ip, initJson)
+    config.vm.define hostname do |host|
+
+                host.vm.hostname = hostname
+                host.vm.provision "shell", path: "provision.sh"
+
+                host.vm.network "private_network", ip: ip
+                host.vm.provision "shell", inline: "echo '#{serverInit}' > /etc/systemd/system/consul.d/init.json"
+                host.vm.provision "shell", inline: "sudo systemctl enable consul"
+                host.vm.provision "shell", inline: "sudo systemctl start consul"
+    end
+  end
 
   serverIp = "192.168.5.25"
-  config.vm.network "private_network", ip: serverIp
-  config.vm.provision "shell", path: "provision.sh"
+#  config.vm.network "private_network", ip: serverIp
+#  config.vm.provision "shell", path: "provision.sh"
+# really should clean this up for later revisions, leaving as breadcrumbs / old logic
 
   serverInit = %(
   	{
